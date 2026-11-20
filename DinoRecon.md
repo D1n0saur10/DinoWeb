@@ -1,6 +1,6 @@
 # 🦕 ꧁𓊈Recon Pasivo𓊉꧂
 
-**`⃤⃞⃟⃤`** Herramientas de reconocimiento pasivo.
+**`⃤⃞⃟⃤`** Herramientas de Reconocimiento Pasivo.
 ```bash
 https://bgp.he.net
 https://stat.ripe.net
@@ -50,6 +50,34 @@ site:sourceforge.net "target"
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Errores comunes.
 site:target.com intext:"error" OR intext:"warning" OR intext:"exception" OR intext:"traceback" OR intext:"syntax error" OR intext:"database error" OR intext:"django error" OR intext:"laravel error" OR intext:"Whoops! There was an error" OR intext:"Directory Listing of /" OR intext:".phpdebugbarr" OR intext:"APPPATH/" OR intext:"you have an error in your sql" OR intext:"PHP DebugBar | Open" OR intext:"Swagger-ui" OR intext:"php error" OR intext:"node error" OR intext:"template error" OR intext:"csrf token mismatch" OR intext:"500 internal server error" OR intext:"404 not found" OR intext:"debug mode" OR intext:"depuracion activada" OR intext:"sql syntax error" OR intext:"mysql error" OR intext:"access denied" OR intext:"permission denied" -inurl:logout -inurl:admin -inurl:cuenta -inurl:acceso -inurl:api -inurl:static -inurl:assets
+```
+**`⃤⃞⃟⃤`** Codigo Fuente de la Pagina.
+```bash
+* Comentarios – <!-- … --> "<--"
+* Inputs ocultos – <input type="hidden" name="…" value="…"> display:none / visibility:hidden
+* Metadatos – <meta name="...">
+* Encabezado – contenido dentro de <head>
+* Enlaces absolutos – http:// / https:// en href, src
+* Enlaces relativos – /admin/, /login/, /api/
+* Scripts/Librerías – <script src="…">, <link rel="stylesheet" href="…">
+* Formularios – <form action="…"> y nombres de campos
+* Recursos externos – URLs a CDNs o servicios de analytics
+* Tokens/Claves – JWT, API‑key, etc
+* Endpoints API – rutas como /api/v1/, api/docs, etc.
+* Mensajes de depuración – textos “debug”, trazas de error
+* Correos – mailto: o direcciones escritas en el HTML
+* Indicadores de CMS – prefijos wp-, joomla-, drupal- en rutas
+* Archivos de configuración – referencias a .env, config.php
+* Plantillas – sintaxis {% … %}, {{ … }}, <!-- #include … -->
+```
+**`⃤⃞⃟⃤`** Archivos Javascript.
+```bash
 
 ```
+
+
+
+
+
+
 
