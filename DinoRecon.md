@@ -20,6 +20,8 @@ bigdomaindata.com
 viewdns.info
 https://www.virustotal.com/vtapi/v2/domain/report?apikey=YOUR_API_KEY&domain=example.com <<< subdominios
 crt.sh
+subfinder
+dig objetivo.com A +short && dig objetivo.com CNAME +short && dig objetivo.com TXT +short && dig objetivo.com NS +short
 ```
 **`⃤⃞⃟⃤`** Google Dorks.
 ```bash
@@ -53,6 +55,7 @@ site:target.com intext:"error" OR intext:"warning" OR intext:"exception" OR inte
 ```
 **`⃤⃞⃟⃤`** Codigo Fuente de la Pagina.
 ```bash
+* Robots.txt
 * Comentarios – <!-- … --> "<--"
 * Inputs ocultos – <input type="hidden" name="…" value="…"> display:none / visibility:hidden
 * Metadatos – <meta name="...">
@@ -72,12 +75,43 @@ site:target.com intext:"error" OR intext:"warning" OR intext:"exception" OR inte
 ```
 **`⃤⃞⃟⃤`** Archivos Javascript.
 ```bash
-
+* Exposicion de informacion sensible
+* Rutas
+* Api keys
+* Control de acceso
+# Un ejemplo para extraer urls.
+const regex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|https?:\/\/(?:[A-Za-z0-9.-]+(?::[A-Za-z0-9.-]+)?@)?(?:(?:[A-Za-z0-9-]+\.)+[A-Za-z]{2,}|(?:\d{1,3}\.){3}\d{1,3})(?:\:\d{1,5})?(?:\/[^\s?#]*)?(?:\?[^\s#]*)?(?:\#[^\s]*)?|\b(?:25[0-5]|2[0-4]\d|1?\d{1,2})(?:\.(?:25[0-5]|2[0-4]\d|1?\d{1,2})){3}\b/gi;
 ```
-
-
-
-
-
-
-
+# 🦕 ꧁𓊈Recon Activo𓊉꧂
+**`⃤⃞⃟⃤`** Provocar Errores Usando Caracteres o Cambiar el Metodo.
+```bash
+%00 %0A %0D ' " \ / ? & = # ; : , [ ] { } ( ) < > | * $ ~
+------------------------------------------------------------
+OPTIONS
+TRACE
+RANDOM
+```
+**`⃤⃞⃟⃤`** Escaneo de Puertos.
+```bash
+# Escaneo lento a todos los puertos.
+nmap -sS -Pn -T2 --max-retries 1 --scan-delay 250ms -p- --script http-title target
+# El mismo escaneo + version en puertos especificos.
+nmap -sS -Pn -T2 --max-retries 1 --scan-delay 250ms -p 80,443,8080,8443 -sV --version-intensity 1 --script http-title objetivo
+```
+**`⃤⃞⃟⃤`** FFuf y Gobuster.
+```bash
+# Sintaxis para Directorios.
+ffuf -w wordlist.txt -H "User-agent:Mozilla/5.0" -u http://127.0.0.1/FUZZ -t 10 -rate 5
+-------------------------------------------------------------------------------------------
+# Para Archivos con Extensiones.
+ffuf -w wordlist.txt -H "User-agent:Mozilla/5.0" -u http://127.0.0.1/indexFUZZ -t 10 -rate 5 -e .php,.zip,.json,.txt
+------------------------------------------------------------------------------------------------------------
+# Para Nombres de Parametros "GET".
+ffuf -w wordlist.txt -H "User-agent:Mozilla/5.0" -u http://127.0.0.1/?FUZZ.php -t 10 -rate 5
+------------------------------------------------------------------------------------------------------------
+# Para "POST"
+ffuf -w wordlist.txt -H "User-agent:Mozilla/5.0" -u http://127.0.0.1/index.php -X POST -d "FUZZ=1" -H "Content-Type: application/x-www-form-urlencoded" -t 10 -rate 5
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Para Subdominios.
+gobuster vhost -u http://127.0.0.1 -w wordlist.txt -t 1 --delay 1s --append-domain -a "User-agent:"
+```
