@@ -56,3 +56,11 @@ https://github.com/iangcarroll/cookiemonster
 https://github.com/AUTHENSOR/ai-seclists
 
 https://github.com/blacklanternsecurity/bbot
+
+https://github.com/danielmiessler/SecLists
+
+https://github.com/trickest/wordlists
+
+https://github.com/BuildHackSecure/gitscraper
+
+https://github.com/orwagodfather/WordList
